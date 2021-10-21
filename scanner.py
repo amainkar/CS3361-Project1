@@ -5,6 +5,9 @@ class DFA_state:
         self.action = action
         self.newState = newState
 
+'''                                     Transition table
+                                        each element is an object of class DFA_state so we can have action and newstate combined in one table
+                                        table is padded so we index from 1 not zero E.g transitionTable[0][] is empty and transtitionTable[x][0] is also empty'''
 transitionTable = [
                     []
                     [[],DFA_state(",",17), DFA_state(",",17), DFA_state(",",2), DFA_state(",",10), DFA_state(",",6), DFA_state(",",7),DFA_state(",",8),DFA_state(",",9),DFA_state(",",11),DFA_state(",",0),DFA_state(",",13),DFA_state(",",14),DFA_state(",",16),DFA_state(",",0)],
@@ -27,7 +30,7 @@ transitionTable = [
                     [[],DFA_state(",",0), DFA_state(",",0), DFA_state(",",0), DFA_state(",",0), DFA_state(",",0), DFA_state(",",0),DFA_state(",",0),DFA_state(",",0),DFA_state(",",0),DFA_state(",",0),DFA_state(",",0),DFA_state(",",0),DFA_state(",",0),DFA_state(",",0)]
                     ]
 
-def charState(c):
+def charState(c):                       # pass in character returns 1-14 representing char state
     if c == '\t' or c == ' ':
         return 1
     elif c == '\n':
@@ -58,7 +61,7 @@ def charState(c):
         return 14
 
     
-def main():
+def main():                             # main function to drive code
     #code for main function
     inp = input()
     temp = inp.split(" ")
@@ -74,7 +77,7 @@ def scan(fp):
     token = ""
     cur_char = ""
     remembered_chars = ""
-    while True:
+    while True:                         # base structure setup aka loops and if statements. Contents still need to be added/corrected to structure
         cur_state = 0
         image = ""
         prev_state = 0
@@ -87,5 +90,3 @@ def scan(fp):
                 pass
             elif action == "error":
                 pass
-
-    pass
