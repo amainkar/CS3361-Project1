@@ -1,6 +1,7 @@
 # CS3361-Project1
 
 INSTRUCTIONS TO COMPILE PYTHON FILE TO BINARY EXECUTABLE
+  
   Some Basic assumptions:
     
     You are on Windows
