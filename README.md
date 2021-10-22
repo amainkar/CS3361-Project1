@@ -21,9 +21,9 @@ INSTRUCTIONS TO COMPILE PYTHON FILE TO BINARY EXECUTABLE
    3. Navigate to your desired dirctory where the python file exists.
    4. Run the following command "pip install pyinstaller"
    5. Let pip completely install the package.
-   6. Then run the command "pyinstaller --oneflag scanner.py".
+   6. Then run the command "pyinstaller --oneflag scanner.py" in the command prompt.
    7. Let it complete running.
    8. In your directory, there will be a folder called "dist".
    9. Copy the "scanner.exe" application from "dist" to the directory where the textfile exists.
-   10. Then from within the terminal type in "scanner.exe" and press enter.
+   10. Then from within the comamnd prompt type in "scanner.exe" and press enter.
    11. Then type in "scanner <filename>" and press enter to get the desired output.
