@@ -14,6 +14,8 @@ INSTRUCTIONS TO COMPILE PYTHON FILE TO BINARY EXECUTABLE
     
     The text file to scan is in the same directory as the python file
    
+   Instructions:
+   
    1. Go to the search bar and type in cmd (command prompt).
    2. Open the command prompt using administrator privilages.
    3. Navigate to your desired dirctory where the python file exists.
