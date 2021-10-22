@@ -1,3 +1,5 @@
+import time
+
 class DFA_state:
     action = ""
     newState = 0
@@ -9,7 +11,7 @@ class DFA_state:
                                         each element is an object of class DFA_state so we can have action and newstate combined in one table
                                         table is padded so we index from 1 not zero E.g transitionTable[0][] is empty and transtitionTable[x][0] is also empty'''
 transitionTable = [
-                    []
+                    [],
                     [[],DFA_state("move",17), DFA_state("move",17), DFA_state("move",2), DFA_state("move",10), DFA_state("move",6), DFA_state("move",7),DFA_state("move",8),DFA_state("move",9),DFA_state("move",11),DFA_state("stuck",0),DFA_state("move",13),DFA_state("move",14),DFA_state("move",16),DFA_state("stuck",0)],
                     [[],DFA_state("recognize",0), DFA_state("recognize",0), DFA_state("move",3), DFA_state("move",4), DFA_state("recognize",0), DFA_state("recognize",0),DFA_state("recognize",0),DFA_state("recognize",0),DFA_state("recognize",0),DFA_state("recognize",0),DFA_state("recognize",0),DFA_state("recognize",0),DFA_state("recognize",0),DFA_state("recognize",0)],
                     [[],DFA_state("move",3), DFA_state("move",18), DFA_state("move",3), DFA_state("move",3), DFA_state("move",3), DFA_state("move",3),DFA_state("move",3),DFA_state("move",3),DFA_state("move",3),DFA_state("move",3),DFA_state("move",3),DFA_state("move",3),DFA_state("move",16),DFA_state("move",3)],
@@ -31,7 +33,7 @@ transitionTable = [
                     ]
 
 tokenTable = {
-    1: 'Start',
+    1: 'error',
     2: 'div',
     3: 'error',
     4: 'error',
@@ -81,34 +83,79 @@ def charState(c):                       # pass in character returns 1-14 represe
     else:
         return 14
 
+global unreadChar 
+unreadChar = []
+EOF = False
     
 def main():                             # main function to drive code
     #code for main function
-    inp = input()
+    inp = input("")
     temp = inp.split(" ")
-    if len(temp ==2) and temp[0] == "scanner":
+    if len(temp) ==2 and temp[0] == "scanner":
         fp = open(temp[1], 'r')
-        while fp != "":
-            scan(fp)
-
-    pass
+        token = ""
+        list_tokens = []
+        while not EOF and token != 'error':
+            token = scan(fp)
+            list_tokens.append(token)
+        if token == 'error':
+            print("error")
+        else:
+            temp = "("
+            for i in list_tokens:
+                temp += (i)
+                temp += ", "
+            temp = temp[:-2]
+            temp += ')'
+            print(temp)
+        time.sleep(20)
 
 def scan(fp):
     #code for scan function
-    token = ""
-    cur_char = ""
+    global EOF
+    token = "whitespace"
+    cur_char = " "
     remembered_chars = ""
-    while True:                         # base structure setup aka loops and if statements. Contents still need to be added/corrected to structure
+    global unreadChar
+    while token == 'whitespace' or token == 'comment':                         # base structure setup aka loops and if statements. Contents still need to be added/corrected to structure
         cur_state = 1
         image = ""
         prev_state = 0
-        while cur_char:
-            cur_char = fp.read(1)
-            action = transitionTable[cur_state][charState(cur_char)]
+        while cur_char != "":
+            if not unreadChar:
+                cur_char = fp.read(1)
+            else:
+                cur_char = unreadChar[0]
+                unreadChar = unreadChar[1:]
+            if cur_char == "":
+                EOF = True
+                return tokenTable[prev_state]
+            action = transitionTable[cur_state][charState(cur_char)].action
             if action == "move":
-
-                pass
+                if cur_state != 0:
+                    prev_state = cur_state
+                    remembered_chars = ""
+                remembered_chars += cur_char
+                cur_state = transitionTable[cur_state][charState(cur_char)].newState
             elif action == "recognize":
-                pass
-            elif action == "error":
-                pass
+                token = tokenTable[cur_state]
+                if cur_char == ' ' or cur_char == '\n' or cur_char == '\t':
+                    pass
+                else:
+                    unreadChar.append(cur_char)
+                break
+
+            elif action == "stuck":
+                if prev_state != 0:
+                    token = tokenTable[prev_state]
+                    break
+                else:
+                    return "error"
+            image += cur_char
+    if image.lower() == 'read':
+        token = 'read'
+    if image.lower() == 'write':
+        token = 'write'
+    return token
+
+main()
